@@ -20,6 +20,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
   private int counter = 1;
+  private boolean findR = false;
   public FileNumberingFilterWriter(Writer out) {
     super(out);
   }
@@ -29,6 +30,8 @@ public class FileNumberingFilterWriter extends FilterWriter {
      String[] temp = new String[2];
      
      String toWrite = new String();
+     str = str.substring(off, off+len);
+     
      if(counter == 1){
          toWrite = String.valueOf(counter++) + '\t';
      }
@@ -36,6 +39,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
          toWrite +=  temp[0] + String.valueOf(counter++) + '\t';
          str = temp[1];
      }
+     toWrite += temp[1];
      out.write(toWrite);
   }
 
@@ -46,7 +50,17 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(int c) throws IOException {
-    write(String.valueOf((char) c));
+    if(c == '\r' && !findR){
+        out.write(c);
+        findR = true;
+    }else if(c!= '\n' && findR){
+        out.write(counter++ + '\t' + String.valueOf((char) c));
+        findR = false;
+    }else{
+        findR = false;
+        write(String.valueOf((char) c)); 
+    }
+    
   }
 
 }
