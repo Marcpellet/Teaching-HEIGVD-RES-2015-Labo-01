@@ -30,7 +30,12 @@ public class DFSFileExplorer implements IFileExplorer {
       if(rootDirectory.isDirectory()){
           File[] files = rootDirectory.listFiles();
           for(int i = 0; i < files.length; i++){
-              explore(files[i], vistor);
+              if(files[i].isFile())
+                explore(files[i], vistor); 
+          }
+          for(int i = 0; i < files.length; i++){
+              if(files[i].isDirectory())
+                explore(files[i], vistor); 
           }
       }
       

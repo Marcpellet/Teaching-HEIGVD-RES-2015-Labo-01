@@ -97,7 +97,7 @@ public class Application implements IApplication {
         LOG.info("> " + tag);
       }
       
-        storeQuote(quote, "quotes-"+i);
+        storeQuote(quote, "quote-"+(i+1));
     }
   }
   
@@ -133,14 +133,17 @@ public class Application implements IApplication {
         path += tags[i] + "/";
     }
     
-    path += filename + ".utf8";
+
     File file = new File(path);
-    if(file.mkdirs()){
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), "UTF-8");
+    if(!file.exists()){
+        file.mkdirs();
+    }   
+        file = new File(path + filename+".utf8");
+        file.createNewFile();
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
         writer.write(quote.getQuote());
         writer.flush();
         writer.close();
-    }
   }
   
   /**
@@ -160,7 +163,7 @@ public class Application implements IApplication {
  
             try {
                 String path = file.getParent();
-                path += "\\" + file.getName() + "\n";
+                path += "\\" + file.getName() + '\n' ;
                 writer.write(path);
             } catch (IOException ex) {
                 Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);

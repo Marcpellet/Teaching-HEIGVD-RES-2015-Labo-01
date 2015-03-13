@@ -54,7 +54,7 @@ public class FileNumberingFilterWriter extends FilterWriter {
         out.write(c);
         findR = true;
     }else if(c!= '\n' && findR){
-        out.write(counter++ + '\t' + String.valueOf((char) c));
+        out.write(String.valueOf(counter++) + '\t' + String.valueOf((char) c));
         findR = false;
     }else{
         findR = false;
