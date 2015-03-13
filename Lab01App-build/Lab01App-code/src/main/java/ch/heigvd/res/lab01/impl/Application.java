@@ -160,7 +160,7 @@ public class Application implements IApplication {
  
             try {
                 String path = file.getParent();
-                path += "\\" + file.getName();
+                path += "\\" + file.getName() + "\n";
                 writer.write(path);
             } catch (IOException ex) {
                 Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
